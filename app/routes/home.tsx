@@ -1,5 +1,5 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import Table from "~/table/table";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -9,5 +9,13 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  return <Welcome />;
+  return( 
+    <div className="flex w-screen items-center h-screen justify-evenly mx-auto gap-10">
+  <Table />
+  <Table />
+  <Table />
+  <Table />
+    </div>
+
+  );
 }
