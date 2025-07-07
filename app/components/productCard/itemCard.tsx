@@ -1,4 +1,4 @@
-import { useParams } from "react-router"
+import { Link, useParams } from "react-router"
 import data from '../../../data.json'
 
 type Product = {
@@ -22,6 +22,8 @@ export default function ItemCard(){
     let item = findItem(id.sku)
     // console.log(item?.title)
     return(
+    <>
+    <Link to='/'>List</Link>
         <div className="rounded gap-2 mx-auto max-w-2xl flex border border-5 m-12">
             <div className="w-2/4"><img src={item?.img} className="w-full h-108 object-cover" alt={item?.title} /></div>
             <div className="w-2/4 flex flex-col items-center justify-evenly">
@@ -31,5 +33,6 @@ export default function ItemCard(){
                 <button className="bg-red-600/75 px-4 p-2 text-lg rounded-xl">Add to Cart</button>
             </div>
         </div>
+    </>
     )
 }
