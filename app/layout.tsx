@@ -5,9 +5,9 @@ import {
   createBrowserRouter,
   RouterProvider
 } from "react-router-dom";
-
+import './app.css'
 import Home from "./page";
-import { Welcome } from "./welcome/welcome";
+import Table from "./table/table";
 
 
 const router = createBrowserRouter([
@@ -16,8 +16,8 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: 'welcome',
-    element: <Welcome />,
+    path: 'Table',
+    element: <Table />,
   },
 
 ]);
