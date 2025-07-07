@@ -10,7 +10,7 @@ interface Product {
 
 export default function ProductList(){
     return(
-        <div className='flex gap-6 m-2 p-2 flex-wrap max-w-7xl mx-auto'>
+        <div className='flex gap-6 m-2 p-2 flex-wrap w-full justify-center mx-auto'>
         {data.map((product:Product)=> {
             return <ProductCard key={product.id} {...product} />
         })}
