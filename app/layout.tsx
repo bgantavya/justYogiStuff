@@ -8,7 +8,6 @@ import {
 import './app.css'
 import Home from "./page";
 import ProductList from "./productList/productList";
-import ProductCard from "./components/productCard/productCard";
 import ItemCard from "./components/productCard/itemCard";
 
 

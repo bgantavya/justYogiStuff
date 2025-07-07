@@ -11,7 +11,6 @@ interface Product {
     brand: string;
 }
 
-<<<<<<< HEAD
 export default function ProductList() {
     const [data, updateData] = useState<Product[]>(products)
     const [keyword, updateKeyword] = useState('')
@@ -68,14 +67,6 @@ export default function ProductList() {
                     return <ProductCard key={product.id} {...product} />
                 }) : <div className='text-black'>found nothing try searching something else</div>}
             </div>
-=======
-export default function ProductList(){
-    return(
-        <div className='flex gap-6 m-2 p-2 flex-wrap w-full justify-center mx-auto'>
-        {data.map((product:Product)=> {
-            return <ProductCard key={product.id} {...product} />
-        })}
->>>>>>> 435add398e81eafb522aaf35d6e7aa863dbbc20d
         </div>
     )
 }
