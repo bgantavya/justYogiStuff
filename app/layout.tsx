@@ -1,4 +1,3 @@
-// main.tsx or main.jsx
 import React from "react";
 import ReactDOM from "react-dom/client";
 import {
@@ -6,10 +5,10 @@ import {
   RouterProvider
 } from "react-router-dom";
 import './app.css'
-import Home from "./page";
+import Cart from "./cart/cart";
 import ProductList from "./productList/productList";
 import ItemCard from "./components/productCard/itemCard";
-
+import { Header } from "./components/productCard/hf";
 
 const router = createBrowserRouter([
   {
@@ -23,12 +22,32 @@ const router = createBrowserRouter([
   {
     path: 'product/:sku',
     element: <ItemCard/>
-  }
-
+  },
+  {
+    path: 'cart',
+    element: <Cart/>
+  },
+  {
+    path: '*',
+    element: <NotFound/>
+  },
 ]);
 
+export function NotFound(){
+  return (<div className="flex justify-center items-center h-screen w-screen">
+    Nothing here, don't try to mess with the site.
+  </div>)
+}
+
+// ReactDOM.createRoot(document.getElementById("root")!).render(
+//   <React.StrictMode>
+//     <Header/>
+//     <RouterProvider router={router} />
+//   </React.StrictMode>
+// );
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+
+  <div>hello</div>
   </React.StrictMode>
-);
+)
