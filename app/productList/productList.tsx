@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import ProductCard from '../components/productCard/productCard'
 import { GetData } from '~/api/dataApi';
 import { Link } from 'react-router';
+import { Header } from "~/components/productCard/hf";
 
 interface Product {
     id: string;
@@ -57,13 +58,14 @@ export default function ProductList() {
                 break
         }
         updateData(up)
-        // console.log(data[0])
     }, [keyword, sort, orgData])
 
 
 
     return (
-        <div className='max-w-7xl mx-auto'>
+        <>
+        <Header/>
+        <div className='max-w-6xl mx-auto'>
             <div className='flex justify-end mt-4 gap-2 items-center'>
                 <select onChange={HandleSort} id="sort" className='text-lg px-2 p-1 border rounded'>
                     <option value="">Default</option>
@@ -72,13 +74,13 @@ export default function ProductList() {
                     <option value="alpha">Sort by Title</option>
                 </select>
                 <input className='border rounded p-1 px-2' placeholder='searchbox' onChange={Search} />
-                <Link to='/cart'>CART</Link>
             </div>
-            <div className='flex gap-6 m-2 p-2 flex-wrap justify-center'>
+            <div className='grid bg-gray-400/50 md:grid-cols-3 m-2 p-2 gap-2'>
                 {data.length > 0 ? data.map((product: Product) => {
                     return <ProductCard key={product.id} {...product} />
                 }) : <div className='text-black'>found nothing try searching something else</div>}
             </div>
         </div>
+        </>
     )
 }

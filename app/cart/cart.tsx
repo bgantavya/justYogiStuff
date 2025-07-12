@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react"
+import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom"
+import { CartItem } from "./cartItem";
 // import { orgData } from "~/productList/productList"
-
+import { Header } from "~/components/productCard/hf";
 type Product = {
     id: string;
     title: string;
@@ -22,17 +24,22 @@ export default function Cart(){
   }, [items]);
 
     return (
-        <div>
-        <Link to='/'>BACK</Link>
+        <>
+            <Header/>
+        
+        <div className="max-w-5xl mx-auto">
+        <Link to='/'>
+        <FaArrowLeft size={30}/>
+        </Link>
         {items.length > 0 ? <div>
-            <ul className="list-disc pl-6 mt-2">
+            
           {items.map((item, index) => (
-              <li key={index} className="my-1">{item.id}:{item.price} {} {item.qty}</li>
-            ))}
-        </ul>
+<CartItem key={index} {...item}/>
+))}
         <div>Total: ${pp}</div>
             </div>
-         : <div> `u added nothing here`</div>}
+         : <div className="text-center">Added nothing here</div>}
         </div>
+         </>
     )
 }

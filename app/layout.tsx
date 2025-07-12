@@ -39,15 +39,9 @@ export function NotFound(){
   </div>)
 }
 
-// ReactDOM.createRoot(document.getElementById("root")!).render(
-//   <React.StrictMode>
-//     <Header/>
-//     <RouterProvider router={router} />
-//   </React.StrictMode>
-// );
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-
-  <div>hello</div>
+    <RouterProvider router={router} />
   </React.StrictMode>
-)
+);
+
