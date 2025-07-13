@@ -64,7 +64,6 @@ export default function ProductList() {
 
     return (
         <>
-        <Header/>
         <div className='max-w-6xl mx-auto'>
             <div className='flex justify-end mt-4 gap-2 items-center'>
                 <select onChange={HandleSort} id="sort" className='text-lg px-2 p-1 border rounded'>

@@ -2,8 +2,6 @@ import { useEffect, useState } from "react"
 import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom"
 import { CartItem } from "./cartItem";
-// import { orgData } from "~/productList/productList"
-import { Header } from "~/components/productCard/hf";
 type Product = {
     id: string;
     title: string;
@@ -14,19 +12,18 @@ type Product = {
     qty: number
 };
 
-export const items : Product[] = []
 
-export default function Cart(){
+export default function Cart({cartItems}: {cartItems: {[key: number]: number}}) {
     const [pp,upd] = useState(0.00)
+    const items : Product[] = []
+    console.log(cartItems)
  useEffect(() => {
     const total = items.reduce((acc, item) => acc + item.price * item.qty, 0);
     upd(parseFloat(total.toFixed(2))); // Keep 2 decimal places
   }, [items]);
 
     return (
-        <>
-            <Header/>
-        
+        <>   
         <div className="max-w-5xl mx-auto">
         <Link to='/'>
         <FaArrowLeft size={30}/>
