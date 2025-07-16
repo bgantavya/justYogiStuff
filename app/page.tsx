@@ -8,9 +8,11 @@ import { useState } from "react";
 
 
 export default function Home() {
-  const [cart, setcart] = useState<{[key: number]: number}>({});
+  const data = localStorage.getItem('cart') || '{}';
+  const [cart, setcart] = useState<{[key: number]: number}>(JSON.parse(data));
   function handleAddToCart(qty: number, i: number) {
     setcart({...cart, [i]: (cart[i] || 0) + qty})
+    localStorage.setItem('cart',JSON.stringify({...cart, [i]: (cart[i] || 0) + qty})); // Update localStorage
   }
 
 

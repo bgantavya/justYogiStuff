@@ -1,21 +1,22 @@
-import { useState } from "react"
-import type { Url } from "url"
+import { useEffect, useState } from "react"
 
-export function CartItem({thumbnail, title, price, qty}:{thumbnail:string, title:string, price: number, qty:number}){
-    // console.log(data)
+export function CartItem({thumbnail, id, title, price, qty, qtychange}:{thumbnail:string, id:string, title:string, price: number, qty:number, qtychange: () => void}){
+    function updateqty(e: React.ChangeEvent<HTMLInputElement>){
+        const value = Number(e.target.value);
+        update(value)
+        localStorage.setItem("cart", JSON.stringify({...JSON.parse(localStorage.getItem("cart") || "{}"), [id]: value}))
+        qtychange();
+    }
+    useEffect(()=>{},[localStorage.getItem("cart")])
     const [qity,update] = useState(qty)
-    // console.log(data.data)
     return(
-        <div className="flex p-2 border">
-            <div className="w-1/5"><img src={thumbnail} className="w-full object-cover" alt="" /></div>
-            <div className="w-full">
-                <h1 className="text-center text-2xl">{title}</h1>
-                <p className="text-xl">Price:{price}</p>
-                <p className="text-xl w-min">Quantity: <input onInput={(event)=>{ 
-                    update(Number((event.target as HTMLInputElement).value ))
-                } } defaultValue={qity} className="border w-fit" type="number"/></p>
-                <p>total:{qity * price}</p>
-            </div>
-        </div>
+<tr>
+
+            <td className="w-1/12"><img src={thumbnail} className="w-full object-cover" alt="" /></td>
+            <td className="text-lg text-center">{title}</td>
+            <td className="text-lg">{price}</td>
+            <td className="text-lg"><input onInput={updateqty} defaultValue={qity} className="border w-18 h-12 text-center rounded" type="number"/></td>
+            <td className="text-lg">{(qity * price).toFixed(2)}</td>
+</tr>
     )
 }
