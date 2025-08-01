@@ -5,7 +5,7 @@ import ProductList from "./productList/productList";
 import ItemCard from "./components/productCard/itemCard";
 import { NotFound } from "./layout";
 import { useState, useEffect } from "react";
-import { ForgotPassword, Login, SignUp } from "./sign/creds";
+import { Login, SignUp, ForgotPassword } from "./sign/creds";
 
 export default function Home() {
   // Load cart from localStorage on mount

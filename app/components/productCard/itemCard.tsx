@@ -26,6 +26,7 @@ export default function ItemCard({ onAdd }: { onAdd: (qty: number, i: number) =>
     const [count, setCount] = useState(1);
 
     useEffect(() => {
+        setCount(1)
         setItem(null);
         if (!sku || Number.isNaN(+sku)) setNotFound(true);
         else {
@@ -33,6 +34,7 @@ export default function ItemCard({ onAdd }: { onAdd: (qty: number, i: number) =>
                 .then((res) => setItem(res.data))
                 .catch(() => setNotFound(true));
             }
+
     }, [sku]);
 
     useEffect(() => {
@@ -41,6 +43,7 @@ export default function ItemCard({ onAdd }: { onAdd: (qty: number, i: number) =>
     
     const AddToCart = () => {;
         onAdd(count, +sku!);
+        setCount(1)
     };
 
     return (
