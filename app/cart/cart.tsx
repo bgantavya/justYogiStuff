@@ -14,17 +14,14 @@ type Product = {
   qty: number;
 };
 
-export default function Cart({ cartItems }: { cartItems: { [key: number]: number } }) {
+export default function Cart(qtychange:any) {
   const [cart, setCart] = useState<{ [key: number]: number }>(
     JSON.parse(localStorage.getItem("cart") || "{}")
   );
   const [total, setTotal] = useState(0.0);
   const [products, setProducts] = useState<Product[]>([]);
 
-  const handleQtyChange = () => {
-    setCart(JSON.parse(localStorage.getItem("cart") || "{}"));
-  };
-
+  
   useEffect(() => {
     const fetchProducts = async () => {
       const promises = Object.keys(cart).map((key) => GetProduct(+key));
@@ -33,7 +30,7 @@ export default function Cart({ cartItems }: { cartItems: { [key: number]: number
     };
     fetchProducts();
   }, [cart]);
-
+  
   useEffect(() => {
     const totalPrice = products.reduce(
       (acc, item) => acc + item.price * (cart[+item.id] || 0),
@@ -41,7 +38,11 @@ export default function Cart({ cartItems }: { cartItems: { [key: number]: number
     );
     setTotal(totalPrice);
   }, [cart, products]);
-
+  
+  const handleQtyChange = () => {
+    setCart(JSON.parse(localStorage.getItem("cart") || "{}"));
+    qtychange()
+  };
   return (
     <div className="max-w-4xl mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
       <Link to="/" className="flex items-center gap-2 text-orange-500 hover:text-orange-800 mb-6">

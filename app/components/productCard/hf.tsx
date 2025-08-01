@@ -1,6 +1,6 @@
 import { FaShoppingBag } from "react-icons/fa";
 
-export function Header({ tc = 0 }: { tc?: number }) {
+export function Header({ tc = 0 }: { tc?: any }) {
     return (
         <header className="w-full bg-white font-bold text-orange-400 shadow-md">
             <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
