@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Todo from "./table/todo";
 import Done from "./table/done";
 
