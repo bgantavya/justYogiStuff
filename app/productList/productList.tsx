@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import ProductCard from '../components/productCard/productCard';
 import { Filter } from '~/api/dataApi';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
 
 interface Product {
     id: string;
@@ -14,34 +15,44 @@ interface Product {
 
 export default function ProductList() {
     // const [orgData, setOrgData] = useState<Product[]>([]);
+    const [searchParams, setSearchParams] = useSearchParams();
     const [data, setData] = useState<Product[]>([]);
-    const [keyword, setKeyword] = useState('');
-    const [order, setOrder] = useState('');
-    const [sort, setSort] = useState('');
-    const [page, setPage] = useState(1);
+    // const [keyword, setKeyword] = useState(searchParams.get('q')! || '');
+    // const [order, setOrder] = useState(searchParams.get('order')! || '');
+    // const [sort, setSort] = useState(searchParams.get('sort')! || '');
+    // const [page, setPage] = useState(+searchParams.get('page')! || 1);
     const [pages, setPages] = useState<number[]>([]);
     const [loading, setLoading] = useState(true);
+    let page = +searchParams.get('page')! || 1;
+    let sort = searchParams.get('sort')! || '';
+    let order = searchParams.get('order')! || '';
+    let keyword = searchParams.get('q')! || '';
 
     function handleSearch(event: React.ChangeEvent<HTMLInputElement>) {
-        setKeyword(event.target.value.toLowerCase());
-        setPage(1)
+        // setKeyword(event.target.value.toLowerCase());
+        setSearchParams({ page: '1', q: event.target.value.toLowerCase(), ...searchParams });
+        // <Navigate to={`?q=${event.target.value.toLowerCase()}`} />;
     }
-
+    
     function handleSort(event: React.ChangeEvent<HTMLSelectElement>) {
         if (event.target.value === 'l2h') {
-            setSort('price');
-            setOrder('asc');
+            setSearchParams({sort: 'price', order: 'asc', ...searchParams});
+            // setSort('price');
+            // setOrder('asc');
         } else if (event.target.value === 'h2l') {
-            setSort('price');
-            setOrder('desc');
+            setSearchParams({sort: 'price', order: 'desc', ...searchParams});
+            // setSort('price');
+            // setOrder('desc');
         } else if (event.target.value === 'alpha') {
-            setSort('title');
-            setOrder('asc');
+            setSearchParams({sort: 'title', order: 'asc', ...searchParams});
+            // setSort('title');
+            // setOrder('asc');
         } else {
-            setOrder('');
-            setSort('');
+            // setOrder('');
+            // setSort('');
+            setSearchParams({ page: '1' , sort: '', order: '', ...searchParams });
         }
-        setPage(1)
+        // setPage(1)
     }
 
     // useEffect(() => {
@@ -83,7 +94,7 @@ export default function ProductList() {
         //         break;
         // }
         // setData(filtered);
-    }, [keyword, sort, page]);
+    }, [searchParams]);
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-8">
@@ -149,17 +160,17 @@ export default function ProductList() {
                 <br/>
                         <div className=" flex justify-center mt-4">
                             {pages.map((num: number) => (
-                                <button
+                                <Link
                                     key={num}
                                     className={`mx-1 px-3 py-1 rounded-lg text-sm font-medium ${
                                         page === num
                                             ? "bg-orange-500 text-white"
                                             : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                                     }`}
-                                    onClick={() => setPage(num)}
+                                    to={`?page=${num}`}
                                 >
                                     {num}
-                                </button>
+                                </Link>
                             ))}
                         </div>
                         </>
