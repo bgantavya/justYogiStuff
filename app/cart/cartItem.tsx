@@ -22,13 +22,15 @@ export function CartItem({
     const [isRemoving, setIsRemoving] = useState(false);
 
     function handleQtyChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const value = Math.max(1, Number(e.target.value));
-        setQuantity(value);
+        // const value = Math.max(1, Number(e.target.value));
+        console.log(e.target.valueAsNumber, id);
+        setQuantity(e.target.valueAsNumber);
+        const value =  e.target.valueAsNumber
         localStorage.setItem(
             "cart",
             JSON.stringify({
                 ...JSON.parse(localStorage.getItem("cart") || "{}"),
-                [id]: value,
+                [id]: value
             })
         );
         qtychange();

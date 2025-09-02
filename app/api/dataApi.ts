@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const GetData = () => axios.get('https://dummyjson.com/products?limit=100&skip=5')
 
-export const GetProduct = (id : number | undefined) => axios.get(`https://dummyjson.com/product/${id}`)
+export const GetProduct = (id : string | number) => axios.get(`https://dummyjson.com/product/${id}`)
 
 export const Filter = (keyword:string, sort:string, order:string, page: number) => 
     // console.log(`https://dummyjson.com/products/search?q=${keyword}&sortBy=${sort}&order=${order}`);

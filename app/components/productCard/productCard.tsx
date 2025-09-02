@@ -11,7 +11,7 @@ type Props = {
 export default function ProductCard({ id, title, thumbnail, category, price }: Props) {
   const navigate = useNavigate();
   const toProduct = () => navigate(`/product/${id}`);
-  // console.log(thumbnail)
+  console.log(thumbnail)
   return (
     <div
       onClick={toProduct}

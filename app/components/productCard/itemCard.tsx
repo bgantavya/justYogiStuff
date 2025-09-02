@@ -136,7 +136,7 @@ export default function ItemCard({ onAdd }: { onAdd: (qty: number, i: number) =>
                                 value={count}
                                 min={1}
                                 max={item.qty}
-                                onChange={(e) => setCount(Math.max(1, Math.min(item.qty, Number(e.target.value))))}
+                                onChange={(e) => setCount(Number(e.target.value))}
                             />
                         </div>
                         <button

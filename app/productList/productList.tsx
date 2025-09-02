@@ -36,21 +36,21 @@ export default function ProductList() {
     
     function handleSort(event: React.ChangeEvent<HTMLSelectElement>) {
         if (event.target.value === 'l2h') {
-            setSearchParams({sort: 'price', order: 'asc', ...searchParams});
+            setSearchParams({ ...Object.fromEntries(searchParams) ,sort: 'price', order: 'asc'});
             // setSort('price');
             // setOrder('asc');
         } else if (event.target.value === 'h2l') {
-            setSearchParams({sort: 'price', order: 'desc', ...searchParams});
+            setSearchParams({...Object.fromEntries(searchParams) ,sort: 'price', order: 'desc'});
             // setSort('price');
             // setOrder('desc');
         } else if (event.target.value === 'alpha') {
-            setSearchParams({sort: 'title', order: 'asc', ...searchParams});
+            setSearchParams({...Object.fromEntries(searchParams) ,sort: 'title', order: 'asc'});
             // setSort('title');
             // setOrder('asc');
         } else {
             // setOrder('');
             // setSort('');
-            setSearchParams({ page: '1' , sort: '', order: '', ...searchParams });
+            setSearchParams({ ...Object.fromEntries(searchParams) , page: '1' , sort: '', order: ''});
         }
         // setPage(1)
     }
@@ -135,6 +135,21 @@ export default function ProductList() {
                 </div>
             ) : (
                 <>
+                <div className=" flex justify-center mt-4">
+                            {pages.map((num: number) => (
+                                <Link
+                                    key={num}
+                                    className={`mx-1 px-3 py-1 rounded-lg text-sm font-medium ${
+                                        page === num
+                                            ? "bg-orange-500 text-white"
+                                            : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                    }`}
+                                    to={`?page=${num}`}
+                                >
+                                    {num}
+                                </Link>
+                            ))}
+                        </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-2xl shadow-lg transition-all duration-500">
                     {data.length > 0 ? (
                         <>

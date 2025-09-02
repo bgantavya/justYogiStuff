@@ -43,7 +43,7 @@ export default function Cart({ qtychange }: { qtychange: any }) {
 
   const handleQtyChange = () => {
     setCart(JSON.parse(localStorage.getItem("cart") || "{}"));
-    qtychange();
+    // qtychange();
   };
 
   return (
