@@ -20,6 +20,10 @@ interface UserContextType {
 }
 export const UserContext = createContext<UserContextType>({user:"", setuser:()=>{}})
 
+import Todo from "./table/todo";
+import Done from "./table/done";
+import { HappyTracker, SadTracker } from "./mood/tracker";
+import { HappyIncrementor, SadIncrementor } from "./mood/incrementor";
 export default function Home() {
   // Load cart from localStorage on mount
   const token = localStorage.getItem("token");
@@ -142,6 +146,14 @@ export default function Home() {
           }>
           </Route>
           
+          <Route path="/mood" element={<div className="flex flex-col items-center">
+    <div className="text-5xl font-bold my-10">X-TODO</div>
+    <HappyTracker/>
+        <SadTracker/>
+            <HappyIncrementor/>
+        <SadIncrementor/>
+
+  </div>} />
 
           {/* <Route index element={<UserRoutes user={user} index element={<ProductList />} />} /> */}
           <Route path="/*" element={<NotFound />} />
