@@ -3,6 +3,10 @@ import ReactDOM from "react-dom/client";
 import "./app.css";
 import Home from "./page";
 import { BrowserRouter } from "react-router-dom";
+import Table from "./table/table";
+import Todo from "./table/todo";
+import { Provider } from "react-redux";
+import store from "./mood/redux/store";
 
 export function NotFound() {
   return (

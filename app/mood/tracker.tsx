@@ -1,14 +1,20 @@
 import { memo } from "react";
 import type { FC } from "react";
 import { useSelector } from "react-redux";
-import { happyCountS, sadCountS } from "./selectors";
+import { happyCountSelector, sadCountSelector } from "./redux/selectors";
 
 
 type HappyTrackerProps = {};
 
 const HappyTrackerComponent: FC<HappyTrackerProps> = () => {
-    const happyCount = useSelector(happyCountS)
-  return <div className="bg-orange-600">{`You were Happy ${happyCount} times.`}</div>
+  const happyCount = useSelector(happyCountSelector)
+  return <div className="bg-orange-600">{`You were Happy times.`}
+    {happyCount.map(
+      moment => <div>
+        Happy {moment.intensity} at {String(moment.at.toLocaleTimeString())}
+      </div>
+    )}
+  </div>
 
 };
 
@@ -18,8 +24,14 @@ export const HappyTracker = memo(HappyTrackerComponent);
 type SadTrackerProps = {};
 
 const SadTrackerComponent: FC<SadTrackerProps> = () => {
-    const sadCount = useSelector(sadCountS)
-  return <div className="bg-blue-600">{`You were Sad ${sadCount} times.`}</div>
+  const sadCount = useSelector(sadCountSelector)
+  return <div className="bg-blue-600">{`You were Sad times.`}
+    {sadCount.map(
+      moment => <div>
+        Happy {moment.intensity} at {String(moment.at.toLocaleTimeString())}
+      </div>
+    )}
+  </div>
 };
 
 // SadTrackerComponent.defaultProps = {}
