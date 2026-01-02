@@ -5,9 +5,13 @@ import {
   createBrowserRouter,
   RouterProvider
 } from "react-router-dom";
-
+import './app.css'
 import Home from "./page";
-import { Welcome } from "./welcome/welcome";
+import Table from "./table/table";
+import Todo from "./table/todo";
+import { Provider } from "react-redux";
+import store from "./mood/store";
+
 
 
 const router = createBrowserRouter([
@@ -16,14 +20,20 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: 'welcome',
-    element: <Welcome />,
+    path: 'table',
+    element: <Table />,
+  },
+    {
+    path: 'todo',
+    element: <Todo />,
   },
 
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
