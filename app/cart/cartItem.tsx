@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FaDumpster, FaTrash } from "react-icons/fa";
 
 interface CartItemProps {
     thumbnail: string;
@@ -31,6 +32,12 @@ export function CartItem({
         );
         qtychange();
     }
+    function deleteCartItem() {
+        const cart = JSON.parse(localStorage.getItem("cart") || "{}");
+        delete cart[id];
+        localStorage.setItem("cart", JSON.stringify(cart));
+        qtychange();
+    }
 
     useEffect(() => {
         setQuantity(qty);
@@ -58,6 +65,12 @@ export function CartItem({
             </td>
             <td className="text-lg text-center p-2 font-bold text-orange-500">
                 ${(quantity * price).toFixed(2)}
+            </td>
+            <td>
+                <button onClick={deleteCartItem} 
+                className="hover:cursor-pointer text-orange-500 hover:text-red-700 transition-colors duration-200">
+                    <FaTrash/>
+                </button>
             </td>
         </tr>
     );

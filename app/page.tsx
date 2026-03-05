@@ -5,7 +5,10 @@ import ProductList from "./productList/productList";
 import ItemCard from "./components/productCard/itemCard";
 import { NotFound } from "./layout";
 import { useState, useEffect } from "react";
-import { ForgotPassword, Login, SignUp } from "./sign/creds";
+// import { SignUp, ForgotPassword } from "./auth/creds";
+import  Login  from "./auth/login";
+import  SignUp  from "./auth/signup";
+import  ForgotPassword  from "./auth/forgotpass";
 
 export default function Home() {
   // Load cart from localStorage on mount
@@ -21,19 +24,21 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
-
+ let num =  Object.keys(cart).length
   function handleAddToCart(qty: number, i: number) {
-    setCart((prevCart) => ({
+    const prevCart = JSON.parse(localStorage.getItem("cart")|| "{}")
+    setCart(() => ({
       ...prevCart,
       [i]: (prevCart[i] || 0) + qty,
     }));
+    num =  Object.keys(cart).length
   }
 
   const router = createBrowserRouter([
     { path: "/", element: <ProductList /> },
     { path: "products", element: <ProductList /> },
     { path: "product/:sku", element: <ItemCard onAdd={handleAddToCart} /> },
-    { path: "cart", element: <Cart cartItems={cart} /> },
+    { path: "cart", element: <Cart qtychange={handleAddToCart}/> },
     { path: "login", element: <Login /> },
     { path: "signup", element: <SignUp /> },
     { path: "forgot-password", element: <ForgotPassword /> },
@@ -48,7 +53,7 @@ export default function Home() {
         fontFamily: "Segoe UI, Arial, sans-serif",
       }}
     >
-      <Header tc={Object.keys(cart).length} />
+      <Header tc={num} />
       <main
         style={{
           background: "#fff",
