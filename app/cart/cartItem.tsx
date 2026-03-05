@@ -1,22 +1,64 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
-export function CartItem({thumbnail, id, title, price, qty, qtychange}:{thumbnail:string, id:string, title:string, price: number, qty:number, qtychange: () => void}){
-    function updateqty(e: React.ChangeEvent<HTMLInputElement>){
-        const value = Number(e.target.value);
-        update(value)
-        localStorage.setItem("cart", JSON.stringify({...JSON.parse(localStorage.getItem("cart") || "{}"), [id]: value}))
+interface CartItemProps {
+    thumbnail: string;
+    id: string;
+    title: string;
+    price: number;
+    qty: number;
+    qtychange: () => void;
+}
+
+export function CartItem({
+    thumbnail,
+    id,
+    title,
+    price,
+    qty,
+    qtychange,
+}: CartItemProps) {
+    const [quantity, setQuantity] = useState(qty);
+
+    function handleQtyChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const value = Math.max(1, Number(e.target.value));
+        setQuantity(value);
+        localStorage.setItem(
+            "cart",
+            JSON.stringify({
+                ...JSON.parse(localStorage.getItem("cart") || "{}"),
+                [id]: value,
+            })
+        );
         qtychange();
     }
-    useEffect(()=>{},[localStorage.getItem("cart")])
-    const [qity,update] = useState(qty)
-    return(
-<tr>
 
-            <td className="w-1/12"><img src={thumbnail} className="w-full object-cover" alt="" /></td>
-            <td className="text-lg text-center">{title}</td>
-            <td className="text-lg">{price}</td>
-            <td className="text-lg"><input onInput={updateqty} defaultValue={qity} className="border w-18 h-12 text-center rounded" type="number"/></td>
-            <td className="text-lg">{(qity * price).toFixed(2)}</td>
-</tr>
-    )
+    useEffect(() => {
+        setQuantity(qty);
+    }, [qty]);
+
+    return (
+        <tr className="hover:bg-gray-100 transition-colors duration-200">
+            <td className="w-1/12 p-2">
+                <img
+                    src={thumbnail}
+                    className="w-16 h-16 object-cover rounded shadow"
+                    alt={title}
+                />
+            </td>
+            <td className="text-lg text-center font-semibold p-2">{title}</td>
+            <td className="text-lg text-center p-2 text-gray-700">${price.toFixed(2)}</td>
+            <td className="text-lg text-center p-2">
+                <input
+                    value={quantity}
+                    min={1}
+                    onChange={handleQtyChange}
+                    className="border w-16 h-10 text-center rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    type="number"
+                />
+            </td>
+            <td className="text-lg text-center p-2 font-bold text-orange-500">
+                ${(quantity * price).toFixed(2)}
+            </td>
+        </tr>
+    );
 }

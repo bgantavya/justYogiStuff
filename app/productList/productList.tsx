@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import ProductCard from '../components/productCard/productCard'
+import ProductCard from '../components/productCard/productCard';
 import { GetData } from '~/api/dataApi';
-import { Link } from 'react-router';
-import { Header } from "~/components/productCard/hf";
+import { Header } from '~/components/productCard/hf';
 
 interface Product {
     id: string;
@@ -15,71 +14,86 @@ interface Product {
 }
 
 export default function ProductList() {
-    const [orgData, updateOrgData] = useState<Product[]>([])
-    const [data, updateData] = useState<Product[]>([])
-    const [keyword, updateKeyword] = useState('')
-    const [sort, updateSort] = useState('')
+    const [orgData, setOrgData] = useState<Product[]>([]);
+    const [data, setData] = useState<Product[]>([]);
+    const [keyword, setKeyword] = useState('');
+    const [sort, setSort] = useState('');
+    const [loading, setLoading] = useState(true);
 
-    function Search(event: React.ChangeEvent<HTMLInputElement>) {
-        const word = event.target.value.toLowerCase()
-        updateKeyword(word)
+    function handleSearch(event: React.ChangeEvent<HTMLInputElement>) {
+        setKeyword(event.target.value.toLowerCase());
     }
 
-    function HandleSort(event: React.ChangeEvent<HTMLSelectElement>) {
-        const way = event.target.value
-        updateSort(way)
+    function handleSort(event: React.ChangeEvent<HTMLSelectElement>) {
+        setSort(event.target.value);
     }
-
-    useEffect(() =>{
-        const token = GetData()
-        token.then((res) =>{
-        updateOrgData(res.data.products)
-        updateData(res.data.products)
-        })
-    },[])
 
     useEffect(() => {
+        GetData().then((res) => {
+            setOrgData(res.data.products);
+            setData(res.data.products);
+            setLoading(false);
+        });
+    }, []);
 
-        let up = orgData.filter((item) =>
+    useEffect(() => {
+        let filtered = orgData.filter((item) =>
             item.title.toLowerCase().includes(keyword) ||
             item.description.toLowerCase().includes(keyword) ||
             item.category.toLowerCase().includes(keyword)
-        )
+        );
 
         switch (sort) {
             case 'l2h':
-                up.sort((a, b) => a.price - b.price)
-                break
+                filtered.sort((a, b) => a.price - b.price);
+                break;
             case 'h2l':
-                up.sort((a, b) => b.price - a.price)
-                break
+                filtered.sort((a, b) => b.price - a.price);
+                break;
             case 'alpha':
-                up.sort((a, b) => a.title.localeCompare(b.title))
-                break
+                filtered.sort((a, b) => a.title.localeCompare(b.title));
+                break;
         }
-        updateData(up)
-    }, [keyword, sort, orgData])
-
-
+        setData(filtered);
+    }, [keyword, sort, orgData]);
 
     return (
-        <>
-        <div className='max-w-6xl mx-auto'>
-            <div className='flex justify-end mt-4 gap-2 items-center'>
-                <select onChange={HandleSort} id="sort" className='text-lg px-2 p-1 border rounded'>
-                    <option value="">Default</option>
-                    <option value="l2h">Sort by Price (asc)</option>
-                    <option value="h2l">Sort by Price (desc)</option>
-                    <option value="alpha">Sort by Title</option>
-                </select>
-                <input className='border rounded p-1 px-2' placeholder='searchbox' onChange={Search} />
+        <div className="max-w-7xl mx-auto px-4 py-8">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                <div className="flex gap-2 items-center">
+                    <label htmlFor="sort" className="text-lg font-medium text-gray-700">Sort:</label>
+                    <select
+                        onChange={handleSort}
+                        id="sort"
+                        className="text-lg px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                        value={sort}
+                    >
+                        <option value="">Default</option>
+                        <option value="l2h">Price: Low to High</option>
+                        <option value="h2l">Price: High to Low</option>
+                        <option value="alpha">Title: A-Z</option>
+                    </select>
+                </div>
+                <input
+                    className="border border-gray-300 rounded-lg py-2 px-3 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400 w-full md:w-64"
+                    placeholder="Search products..."
+                    onChange={handleSearch}
+                    value={keyword}
+                />
             </div>
-            <div className='grid bg-gray-400/50 md:grid-cols-3 m-2 p-2 gap-2'>
-                {data.length > 0 ? data.map((product: Product) => {
-                    return <ProductCard key={product.id} {...product} />
-                }) : <div className='text-black'>found nothing try searching something else</div>}
+                { loading ? '   Loading...' : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 bg-gray-100 p-4 rounded-lg shadow">
+                {data.length > 0 ? (
+                    data.map((product: Product) => (
+                        <ProductCard key={product.id} {...product} />
+                    ))
+                ) : (
+                    <div className="col-span-full text-center text-gray-600 py-8 text-xl">
+                        No products found. Try searching something else.
+                    </div>
+                )}
             </div>
+            )}
         </div>
-        </>
-    )
+    );
 }

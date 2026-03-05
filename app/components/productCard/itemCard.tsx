@@ -1,7 +1,7 @@
-import { Link, useNavigate, useParams } from "react-router"
+import { Link, useNavigate, useParams } from "react-router";
 import { GetProduct } from "~/api/dataApi";
 import { useState, useEffect } from "react";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 type Product = {
     id: string;
@@ -10,50 +10,104 @@ type Product = {
     category: string;
     price: number;
     description: string;
-    qty: number
+    qty: number;
 };
 
 type RouteParams = {
-    sku: string
-}
+    sku: string;
+};
 
-export default function ItemCard({onAdd}: {onAdd: (qty: number, i: number) => void}) {
-    const [notFound, updatenf] = useState(false)
-    let { sku } = useParams<RouteParams>()
-    const [item, updateit] = useState<Product | null>(null)
-    const num = sku ? +sku : NaN
+export default function ItemCard({ onAdd }: { onAdd: (qty: number, i: number) => void }) {
+    const [notFound, setNotFound] = useState(false);
+    const { sku } = useParams<RouteParams>();
+    const [item, setItem] = useState<Product | null>(null);
+    const num = sku ? +sku : NaN;
+    const navigate = useNavigate();
+    const [count, setCount] = useState(1);
 
     useEffect(() => {
-        if (!sku || Number.isNaN(+sku)) updatenf(true)
+        setItem(null);
+        if (!sku || Number.isNaN(+sku)) setNotFound(true);
         else {
-            const token = GetProduct(+sku)
-            token.then((res) => updateit(res.data))
-        }
-    }, [sku])
-    const navigate = useNavigate()
-    if (notFound) navigate('/*')
-    const [count, setCount] = useState(1)
-    const AddToCart = () => onAdd(count,+sku!)
+            GetProduct(+sku)
+                .then((res) => setItem(res.data))
+                .catch(() => setNotFound(true));
+            }
+    }, [sku]);
+
+    useEffect(() => {
+        if (notFound) navigate("/*");
+    }, [notFound, navigate]);
+    
+    const AddToCart = () => {;
+        onAdd(count, +sku!);
+    };
 
     return (
-        <>
-            <div className="flex justify-evenly mt-5 items-center">
-                {num > 0 ? <Link className="p-1 rounded px-3 bg-indigo-500 text-white" to={`/product/${num - 1}`}>Prev</Link> : ""}
-                <Link className="p-1 rounded px-3 bg-indigo-500 text-white" to='/'>Back</Link>
-                <Link className="p-1 rounded px-3 bg-indigo-500 text-white" to={`/product/${num + 1}`}>next</Link>
+        <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-indigo-100 py-8">
+            <div className="flex justify-center gap-4 mb-8">
+                {num > 1 && (
+                    <Link
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-600 hover:bg-orange-700 text-white shadow transition"
+                        to={`/product/${num - 1}`}
+                    >
+                        <FaArrowLeft /> Prev
+                    </Link>
+                )}
+                <Link
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-500 hover:bg-gray-600 text-white shadow transition"
+                    to="/"
+                >
+                    <FaArrowLeft /> Back
+                </Link>
+                <Link
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-600 hover:bg-orange-700 text-white shadow transition"
+                    to={`/product/${num + 1}`}
+                >
+                    Next <FaArrowRight />
+                </Link>
             </div>
 
-            {item ?
-                <div className="rounded gap-2 mx-auto max-w-2xl flex border border-5 m-12">
-                    <div className="w-2/4"><img src={item?.thumbnail} className="w-full h-108 object-cover" alt={item?.title} /></div>
-                    <div className="w-2/4 flex flex-col items-center justify-evenly">
-                        <h2 className="font-bold text-3xl">{item?.title}</h2>
-                        <p className="font-bold text-red-500 text-3xl">${item?.price}</p>
-                        <p className="text-justify p-2">{item?.description}</p>
-                        <input type="number" className="border rounded p-2 w-1/4 text-center" defaultValue={1} min={1} max={20}  onChange={(e) => setCount(Number(e.target.value))} />
-                        <button onClick={AddToCart} className="bg-red-600/75 px-4 p-2 text-lg rounded-xl">Add to Cart</button>
+            {item ? (
+                <div className="mx-auto max-w-3xl bg-white rounded-xl shadow-lg flex flex-col md:flex-row overflow-hidden border border-indigo-200">
+                    <div className="md:w-1/2 flex items-center justify-center bg-indigo-50 p-6">
+                        <img
+                            src={item.thumbnail}
+                            className="w-full h-80 object-contain rounded-lg"
+                            alt={item.title}
+                        />
                     </div>
-                </div> : <div>Loading...</div>}
-        </>
-    )
+                    <div className="md:w-1/2 flex flex-col gap-4 p-8 justify-center">
+                        <h2 className="font-bold text-3xl text-orange-500">{item.title}</h2>
+                        <p className="font-bold text-2xl">${item.price}</p>
+                        <p className="text-gray-700">{item.description}</p>
+                        <div className="flex items-center gap-2">
+                            <label htmlFor="qty" className="font-medium text-gray-600">
+                                Qty:
+                            </label>
+                            <input
+                                id="qty"
+                                type="number"
+                                className="border rounded p-2 w-20 text-center focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                                value={count}
+                                min={1}
+                                max={20}
+                                onChange={(e) => setCount(Number(e.target.value))}
+                            />
+                        </div>
+                        <button
+                            onClick={AddToCart}
+                            className="bg-orange-600 hover:bg-orange-700 px-6 py-3 text-lg rounded-xl text-white font-semibold shadow transition"
+                        >
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            ) : (
+                <div className="flex justify-center items-center h-64">
+                    <span className="text-indigo-500 text-xl font-semibold animate-pulse">Loading...</span>
+                </div>
+            )}
+        </div>
+    );
 }

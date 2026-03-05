@@ -1,22 +1,32 @@
-import { useNavigate } from "react-router"
+import { useNavigate } from "react-router";
 
-type props =  {
+type Props = {
   id: string;
   title: string;
   thumbnail: string;
   category: string;
   price: number;
+};
+
+export default function ProductCard({ id, title, thumbnail, category, price }: Props) {
+  const navigate = useNavigate();
+  const toProduct = () => navigate(`/product/${id}`);
+
+  return (
+    <div
+      onClick={toProduct}
+      className="cursor-pointer transition-shadow hover:shadow-lg flex flex-col bg-white items-center p-4 gap-3 rounded-xl max-w-sm border border-gray-200"
+    >
+      <div className="w-full h-56 flex items-center justify-center overflow-hidden rounded-xl bg-gray-100">
+        <img
+          src={thumbnail}
+          alt={title}
+          className="object-cover w-full h-full"
+        />
+      </div>
+      <p className="px-2 text-xs text-gray-400 self-start uppercase tracking-wide">{category}</p>
+      <h2 className="text-lg font-semibold text-gray-800 self-start">{title}</h2>
+      <p className="text-orange-500 font-bold text-xl self-start">${price.toFixed(2)}</p>
+    </div>
+  );
 }
-
-export default function ProductCard({id, title, thumbnail, category, price}: props){
-  let navigate = useNavigate()
-  const toProduct = () => navigate(`/product/${id}`)
-
-  return (      
-    <div onClick={toProduct} className="flex flex-col bg-white items-center p-2 gap-2 rounded justify-content max-w-lg">
-        <img src={thumbnail} alt={title} className=" h-60 w-90 rounded-xl object-cover" />
-        <p className="px-2 text-gray-500 self-start">{category}</p>
-        <h2 className="text-xl font-bold">{title}</h2>
-        <p className="text-red-500 font-bolder text-lg">${price}</p>
-      </div>  
-    )}
