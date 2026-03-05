@@ -5,19 +5,19 @@ import {
   createBrowserRouter,
   RouterProvider
 } from "react-router-dom";
-
+import './app.css'
 import Home from "./page";
-import { Welcome } from "./welcome/welcome";
+import ProductList from "./productList/productList";
 
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
+    element: <ProductList />,
   },
   {
-    path: 'welcome',
-    element: <Welcome />,
+    path: 'products',
+    element: <ProductList />,
   },
 
 ]);
