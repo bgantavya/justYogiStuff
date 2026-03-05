@@ -8,6 +8,8 @@ import {
 import './app.css'
 import Home from "./page";
 import ProductList from "./productList/productList";
+import ProductCard from "./components/productCard/productCard";
+import ItemCard from "./components/productCard/itemCard";
 
 
 const router = createBrowserRouter([
@@ -19,6 +21,10 @@ const router = createBrowserRouter([
     path: 'products',
     element: <ProductList />,
   },
+  {
+    path: 'product/:sku',
+    element: <ItemCard/>
+  }
 
 ]);
 
